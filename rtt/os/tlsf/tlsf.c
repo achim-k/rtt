@@ -376,10 +376,13 @@ static __inline__ bhdr_t *FIND_SUITABLE_BLOCK(tlsf_t * _tlsf, int *_fl, int *_sl
     return _b;
 }
 
+#define IGNORE_RETURN_VALUE(var, expr) var = (expr); (void) var
+
 static __inline__ void corrupt(const char *msg) {
     static const char *k =  "* Heap corruption detected: *\n";
-    write( STDERR_FILENO, k, strlen(k) );
-    write( STDERR_FILENO, msg, strlen(msg) );
+    int _ignored;
+    IGNORE_RETURN_VALUE(_ignored, write( STDERR_FILENO, k, strlen(k) ));
+    IGNORE_RETURN_VALUE(_ignored, write( STDERR_FILENO, msg, strlen(msg) ));
     abort();
 }
 
